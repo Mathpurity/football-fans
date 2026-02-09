@@ -1,41 +1,28 @@
-import { getToken } from "../utils/auth";
+import api from "./api";
 
-const BASE = `${import.meta.env.VITE_API_BASE_URL}/api/images`;
+// PUBLIC
+export const getImages = async () => {
+  const res = await api.get("/api/images");
+  return res.data;
+};
 
-export async function getAdminImages() {
-  const res = await fetch(`${BASE}/admin`, {
-    headers: { Authorization: `Bearer ${getToken()}` },
-  });
-  return res.json();
-}
+// ADMIN
+export const getAdminImages = async () => {
+  const res = await api.get("/api/images/admin");
+  return res.data;
+};
 
-export async function createImage(data) {
-  const res = await fetch(BASE, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${getToken()}`,
-    },
-    body: JSON.stringify(data),
-  });
-  return res.json();
-}
+export const createImage = async (data) => {
+  const res = await api.post("/api/images", data);
+  return res.data;
+};
 
-export async function updateImage(id, data) {
-  const res = await fetch(`${BASE}/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${getToken()}`,
-    },
-    body: JSON.stringify(data),
-  });
-  return res.json();
-}
+export const updateImage = async (id, data) => {
+  const res = await api.put(`/api/images/${id}`, data);
+  return res.data;
+};
 
-export async function deleteImage(id) {
-  await fetch(`${BASE}/${id}`, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${getToken()}` },
-  });
-}
+export const deleteImage = async (id) => {
+  const res = await api.delete(`/api/images/${id}`);
+  return res.data;
+};

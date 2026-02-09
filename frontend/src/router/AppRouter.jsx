@@ -1,35 +1,31 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
-import Home from "../pages/Home.jsx";
-import Gallery from "../pages/Gallery.jsx";
-import Videos from "../pages/Videos.jsx";
-import Contact from "../pages/Contact.jsx";
+import Home from "../pages/Home";
+import Gallery from "../pages/Gallery";
+import Videos from "../pages/Videos";
+import Contact from "../pages/Contact";
 
-import Login from "../pages/admin/Login.jsx";
-import Dashboard from "../pages/admin/Dashboard.jsx";
-import ImagesAdmin from "../pages/admin/Images.jsx";
-import AdminMessages from "../pages/admin/Messages.jsx";
+import Login from "../pages/admin/Login";
+import Dashboard from "../pages/admin/Dashboard";
+import ImagesAdmin from "../pages/admin/Images";
+import AdminMessages from "../pages/admin/Messages";
 
-import ProtectedRoute from "../components/ProtectedRoute.jsx";
-import Navbar from "../components/Navbar.jsx";
-import Footer from "../components/Footer.jsx";
+import ProtectedRoute from "../components/ProtectedRoute";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
-export default function AppRouter() {
-  const location = useLocation();
-  const isAdmin = location.pathname.startsWith("/admin");
 
+export default function App() {
   return (
     <>
-      {!isAdmin && <Navbar />}
+      <Navbar />
 
       <Routes>
-        {/* PUBLIC */}
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/videos" element={<Videos />} />
         <Route path="/contact" element={<Contact />} />
 
-        {/* ADMIN */}
         <Route path="/admin/login" element={<Login />} />
 
         <Route
@@ -60,7 +56,7 @@ export default function AppRouter() {
         />
       </Routes>
 
-      {!isAdmin && <Footer />}
+      <Footer />
     </>
   );
 }
