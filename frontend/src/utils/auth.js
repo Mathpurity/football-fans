@@ -1,12 +1,12 @@
-export function saveToken(token) {
-  localStorage.setItem("token", token);
-}
+import { jwtDecode } from "jwt-decode";
 
-export function getToken() {
-  return localStorage.getItem("token");
-}
+export const getUser = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  return jwtDecode(token);
+};
 
-export function logout() {
-  localStorage.removeItem("token");
-  window.location.href = "/admin/login";
-}
+export const isAdmin = () => {
+  const user = getUser();
+  return user?.role === "admin";
+};
