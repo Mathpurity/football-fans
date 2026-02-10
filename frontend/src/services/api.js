@@ -25,6 +25,7 @@ export async function apiFetch(method, url, data) {
     data,
   });
   return res.data;
+  
 }
 
 export default api;

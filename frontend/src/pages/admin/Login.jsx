@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../services/auth";
-import { saveToken } from "../../utils/auth";
+import { saveToken, getUser, isAdmin } from "../../utils/auth";
 import Swal from "sweetalert2";
 
 export default function Login() {
