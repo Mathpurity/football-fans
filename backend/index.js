@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import youtubeRoutes from "./routes/youtube.js";
 import authRoutes from "./routes/auth.js";
-import imageRoutes from "./routes/images.js";
+import imageRoutes from "./routes/imageRoutes.js";
 import messageRoutes from "./routes/messages.js";
 import statsRoutes from "./routes/stats.js";
 import seedRoutes from "./routes/seed.js";
