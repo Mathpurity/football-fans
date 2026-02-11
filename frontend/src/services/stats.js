@@ -1,3 +1,11 @@
-import { apiFetch } from "./api";
+import api from "./api";
 
-export const getStats = () => apiFetch("/api/stats");
+export const getStats = async () => {
+  try {
+    const res = await api.get("/stats");
+    return res.data;
+  } catch (err) {
+    console.error("Stats fetch error:", err);
+    throw err;
+  }
+};
