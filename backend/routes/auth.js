@@ -1,18 +1,24 @@
-import express from "express";
-import bcrypt from "bcryptjs";
-import User from "../models/User.js";
+const { email, password } = req.body;
 
-const router = express.Router();
+const cleanEmail = email.trim().toLowerCase();
 
-router.post("/reset-admin-password", async (req, res) => {
-  const hashed = await bcrypt.hash("Admin123!", 10);
+console.log("LOGIN EMAIL RECEIVED:", cleanEmail);
 
-  await User.findOneAndUpdate(
-    { email: "admin@test.com" },
-    { password: hashed }
-  );
+const user = await User.findOne({ email: cleanEmail });
 
-  res.json({ message: "Admin password reset" });
-});
+if (!user) {
+  return res.status(401).json({ message: "Invalid credentials" });
+}
 
-export default router;
+const isMatch = await bcrypt.compare(password, user.password);
+if (!isMatch) {
+  return res.status(401).json({ message: "Invalid credentials" });
+}
+
+const token = jwt.sign(
+  { id: user._id, role: user.role },
+  process.env.JWT_SECRET,
+  { expiresIn: "7d" }
+);
+
+res.json({ token });
