@@ -1,4 +1,8 @@
+import express from "express";
 import bcrypt from "bcryptjs";
+import User from "../models/User.js";
+
+const router = express.Router();
 
 router.post("/reset-admin-password", async (req, res) => {
   const hashed = await bcrypt.hash("Admin123!", 10);
@@ -8,5 +12,7 @@ router.post("/reset-admin-password", async (req, res) => {
     { password: hashed }
   );
 
-  res.json({ message: "Admin password reset to Admin123!" });
+  res.json({ message: "Admin password reset" });
 });
+
+export default router;
