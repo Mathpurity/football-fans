@@ -8,7 +8,16 @@ export default function Dashboard() {
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
-    getStats().then(setStats);
+    async function fetchStats() {
+      try {
+        const data = await getStats();
+        setStats(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    fetchStats();
   }, []);
 
   return (
@@ -16,10 +25,10 @@ export default function Dashboard() {
       {!stats ? (
         <Skeleton />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <StatCard title="Images" value={stats.images} />
-          <StatCard title="Videos" value={stats.videos} />
-          <StatCard title="Messages" value={stats.messages} />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <StatCard title="Images" value={stats.images || 0} />
+          <StatCard title="Videos" value={stats.videos || 0} />
+          <StatCard title="Messages" value={stats.messages || 0} />
         </div>
       )}
     </DashboardLayout>
