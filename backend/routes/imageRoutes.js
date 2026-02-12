@@ -19,30 +19,40 @@ router.post(
         return res.status(400).json({ message: "No image uploaded" });
       }
 
-      // Upload buffer to Cloudinary
-      const result = await new Promise((resolve, reject) => {
-        cloudinary.uploader
-          .upload_stream(
+      // Upload buffer to Cloudinary using stream
+      const uploadToCloudinary = () =>
+        new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
             { folder: "football-fans" },
             (error, result) => {
-              if (error) reject(error);
-              else resolve(result);
+              if (error) {
+                console.error("Cloudinary Error:", error);
+                return reject(error);
+              }
+              resolve(result);
             }
-          )
-          .end(req.file.buffer);
-      });
+          );
+
+          stream.end(req.file.buffer);
+        });
+
+      const result = await uploadToCloudinary();
 
       const image = await Image.create({
-        title: req.body.title,
-        description: req.body.description,
+        title: req.body.title || "",
+        description: req.body.description || "",
         imageUrl: result.secure_url,
         isApproved: false,
       });
 
       res.status(201).json(image);
+
     } catch (error) {
       console.error("Upload Error:", error);
-      res.status(500).json({ message: "Image upload failed" });
+      res.status(500).json({
+        message: "Image upload failed",
+        error: error.message,
+      });
     }
   }
 );
@@ -57,7 +67,7 @@ router.get("/", async (_req, res) => {
 
     res.json(images);
   } catch (error) {
-    console.error(error);
+    console.error("Fetch approved error:", error);
     res.status(500).json({ message: "Failed to fetch images" });
   }
 });
@@ -70,7 +80,7 @@ router.get("/admin", authMiddleware, async (_req, res) => {
     const images = await Image.find().sort({ createdAt: -1 });
     res.json(images);
   } catch (error) {
-    console.error(error);
+    console.error("Fetch admin error:", error);
     res.status(500).json({ message: "Failed to fetch images" });
   }
 });
@@ -92,7 +102,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
 
     res.json(updated);
   } catch (error) {
-    console.error(error);
+    console.error("Update error:", error);
     res.status(500).json({ message: "Failed to update image" });
   }
 });
@@ -110,7 +120,7 @@ router.delete("/:id", authMiddleware, async (req, res) => {
 
     res.status(204).end();
   } catch (error) {
-    console.error(error);
+    console.error("Delete error:", error);
     res.status(500).json({ message: "Failed to delete image" });
   }
 });
