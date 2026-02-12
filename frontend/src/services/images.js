@@ -1,28 +1,46 @@
 import api from "./api";
 
-// PUBLIC
+/**
+ * PUBLIC — Get approved images
+ */
 export const getImages = async () => {
-  const res = await api.get("/api/images");
+  const res = await api.get("/images");
   return res.data;
 };
 
-// ADMIN
+/**
+ * ADMIN — Get all images
+ */
 export const getAdminImages = async () => {
-  const res = await api.get("/api/images/admin");
+  const res = await api.get("/images/admin");
   return res.data;
 };
 
-export const createImage = async (data) => {
-  const res = await api.post("/api/images", data);
+/**
+ * ADMIN — Upload image
+ */
+export const createImage = async (formData) => {
+  const res = await api.post("/images/upload", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
   return res.data;
 };
 
+/**
+ * ADMIN — Update image
+ */
 export const updateImage = async (id, data) => {
-  const res = await api.put(`/api/images/${id}`, data);
+  const res = await api.put(`/images/${id}`, data);
   return res.data;
 };
 
+/**
+ * ADMIN — Delete image
+ */
 export const deleteImage = async (id) => {
-  const res = await api.delete(`/api/images/${id}`);
+  const res = await api.delete(`/images/${id}`);
   return res.data;
 };

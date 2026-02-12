@@ -7,7 +7,7 @@ import Contact from "../pages/Contact";
 
 import Login from "../pages/admin/Login";
 import Dashboard from "../pages/admin/Dashboard";
-import ImagesAdmin from "../pages/admin/Images";
+import UploadImage from "../pages/admin/UploadImage"; // ✅ Correct
 import AdminMessages from "../pages/admin/Messages";
 
 import ProtectedRoute from "../components/ProtectedRoute";
@@ -20,19 +20,17 @@ export default function App() {
       <Navbar />
 
       <Routes>
-        {/* Public Routes */}
+        {/* ---------------- PUBLIC ROUTES ---------------- */}
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/videos" element={<Videos />} />
         <Route path="/contact" element={<Contact />} />
 
-        {/* Admin Login */}
+        {/* ---------------- ADMIN LOGIN ---------------- */}
         <Route path="/admin/login" element={<Login />} />
 
-        {/* Redirect /admin → /admin/dashboard */}
-        <Route path="/admin" element={<Navigate to="/admin/dashboard" />} />
+        {/* ---------------- PROTECTED ADMIN ROUTES ---------------- */}
 
-        {/* Protected Admin Routes */}
         <Route
           path="/admin/dashboard"
           element={
@@ -43,10 +41,10 @@ export default function App() {
         />
 
         <Route
-          path="/admin/images"
+          path="/admin/upload"
           element={
             <ProtectedRoute>
-              <ImagesAdmin />
+              <UploadImage />
             </ProtectedRoute>
           }
         />
@@ -60,8 +58,14 @@ export default function App() {
           }
         />
 
-        {/* Catch-all (Optional but recommended) */}
-        <Route path="*" element={<Navigate to="/" />} />
+        {/* Redirect /admin → dashboard */}
+        <Route
+          path="/admin"
+          element={<Navigate to="/admin/dashboard" replace />}
+        />
+
+        {/* ---------------- FALLBACK ---------------- */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
       <Footer />

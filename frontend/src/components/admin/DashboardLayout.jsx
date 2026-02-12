@@ -28,7 +28,7 @@ export default function DashboardLayout({ children }) {
             Dashboard
           </NavLink>
 
-          <NavLink to="/admin/images" className="block p-3 rounded-lg hover:bg-gray-800">
+          <NavLink to="/admin/upload" className="block p-3 rounded-lg hover:bg-gray-800">
             Images
           </NavLink>
 
