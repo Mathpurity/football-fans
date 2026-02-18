@@ -30,6 +30,7 @@ export default function App() {
         <Route path="/admin/login" element={<Login />} />
 
         {/* ---------------- PROTECTED ADMIN ROUTES ---------------- */}
+   
 
         <Route
           path="/admin/dashboard"

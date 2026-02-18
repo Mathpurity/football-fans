@@ -4,16 +4,20 @@ const imageSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: true,
     },
-    description: String,
+    description: {
+      type: String,
+    },
     imageUrl: {
       type: String,
       required: true,
     },
+    publicId: {
+      type: String, // 🔥 needed for Cloudinary delete
+    },
     isApproved: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   { timestamps: true }
