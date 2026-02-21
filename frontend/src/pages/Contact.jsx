@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Container from "../components/Container";
 import { success, error } from "../utils/notify";
+import { sendMessage } from "../services/messages";
 
 export default function Contact() {
   const [form, setForm] = useState({
@@ -24,16 +25,7 @@ export default function Contact() {
     try {
       setLoading(true);
 
-      const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/messages`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        }
-      );
-
-      if (!res.ok) throw new Error();
+      await sendMessage(form);
 
       success("Message sent successfully 🎉");
       setForm({ name: "", email: "", message: "" });
@@ -46,14 +38,17 @@ export default function Contact() {
 
   return (
     <Container>
-      <div className="max-w-xl mx-auto bg-white p-6 rounded shadow">
-        <h1 className="text-3xl font-bold mb-4 text-center">Contact Us</h1>
+      <div className="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+        <h1 className="text-3xl font-bold mb-6 text-center">
+          Contact Us
+        </h1>
 
-        <form onSubmit={submit} className="space-y-4">
+        <form onSubmit={submit} className="space-y-5">
+
           <input
             name="name"
             placeholder="Your name"
-            className="border p-3 w-full rounded"
+            className="border p-3 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
             value={form.name}
             onChange={handleChange}
           />
@@ -62,7 +57,7 @@ export default function Contact() {
             name="email"
             type="email"
             placeholder="Your email"
-            className="border p-3 w-full rounded"
+            className="border p-3 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
             value={form.email}
             onChange={handleChange}
           />
@@ -70,7 +65,7 @@ export default function Contact() {
           <textarea
             name="message"
             placeholder="Your message"
-            className="border p-3 w-full rounded"
+            className="border p-3 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
             rows={5}
             value={form.message}
             onChange={handleChange}
@@ -78,10 +73,18 @@ export default function Contact() {
 
           <button
             disabled={loading}
-            className="w-full bg-black text-white py-3 rounded hover:bg-gray-800 transition"
+            className="w-full bg-black text-white py-3 rounded flex items-center justify-center gap-2 transition hover:bg-gray-800"
           >
-            {loading ? "Sending..." : "Send Message"}
+            {loading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Sending...
+              </>
+            ) : (
+              "Send Message"
+            )}
           </button>
+
         </form>
       </div>
     </Container>

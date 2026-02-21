@@ -14,15 +14,38 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+/* ---------------- CORS CONFIG ---------------- */
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://football-fans-frontend.onrender.com", // replace with your real frontend Render URL
+    ],
+    credentials: true,
+  })
+);
+
+/* ---------------- MIDDLEWARE ---------------- */
 app.use(express.json());
 
+/* ---------------- ROUTES ---------------- */
 app.use("/api/stats", statsRoutes);
 app.use("/api/youtube", youtubeRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/images", imageRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/seed", seedRoutes);
+
+/* ---------------- HEALTH CHECK ---------------- */
+app.get("/", (req, res) => {
+  res.json({ message: "Football Fans API running 🚀" });
+});
+
+/* ---------------- GLOBAL ERROR HANDLER ---------------- */
+app.use((err, req, res, next) => {
+  console.error("Server Error:", err);
+  res.status(500).json({ message: "Internal Server Error" });
+});
 
 const PORT = process.env.PORT || 5000;
 

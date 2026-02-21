@@ -16,7 +16,22 @@ export default function Videos() {
   }, []);
 
   if (loading) {
-    return <Container>Loading videos...</Container>;
+    return (
+      <Container>
+        <div className="flex flex-col items-center justify-center py-24 space-y-6">
+          <div className="relative w-20 h-20">
+            <div className="absolute inset-0 rounded-full border-4 border-blue-600 animate-ping opacity-30"></div>
+            <div className="absolute inset-0 rounded-full border-4 border-blue-500"></div>
+            <div className="absolute inset-2 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl shadow-lg">
+              ▶
+            </div>
+          </div>
+          <p className="text-blue-500 animate-pulse uppercase text-sm tracking-widest">
+            Loading Videos...
+          </p>
+        </div>
+      </Container>
+    );
   }
 
   if (error) {

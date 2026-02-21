@@ -16,7 +16,10 @@ export default function Home() {
       try {
         const data = await getImages();
         if (Array.isArray(data)) {
-          setImages(data);
+          const sorted = [...data].sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
+          setImages(sorted);
         } else {
           setImages([]);
         }
@@ -60,18 +63,83 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ================= IMAGE SECTION ================= */}
+      {/* ================= ABOUT SECTION ================= */}
+      <section className="py-24 bg-black text-white">
+        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              About Football Fans
+            </h2>
+
+            <p className="text-gray-400 mb-4 leading-relaxed">
+              Football Fans is a growing digital platform dedicated to sharing
+              unforgettable moments, powerful match highlights, and passionate
+              fan experiences from around the world.
+            </p>
+
+            <p className="text-gray-400 mb-4 leading-relaxed">
+              Our mission is to create a community where football lovers can
+              relive exciting memories, celebrate victories, and stay inspired
+              by the beautiful game.
+            </p>
+
+            <p className="text-gray-400 leading-relaxed">
+              This platform continues to grow with new content, exclusive
+              uploads, and exciting features built for fans by fans.
+            </p>
+          </div>
+
+          <div className="flex justify-center">
+            <div className="relative w-72 h-72 md:w-80 md:h-80 border-4 border-blue-600 rounded-2xl overflow-hidden shadow-2xl bg-slate-800 flex items-center justify-center">
+              <img
+                src="https://via.placeholder.com/400x400.png?text=Owner+Photo"
+                alt="Owner"
+                className="w-full h-full object-cover"
+              />
+
+              <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-center py-2">
+                <p className="text-sm text-gray-300">
+                  Founder / Owner
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= RECENT PHOTOS SECTION ================= */}
       <section className="py-20 bg-slate-900">
         <div className="max-w-6xl mx-auto px-4">
 
-          {/* ===== LOADING SPINNER ===== */}
+          {/* SECTION TITLE */}
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold text-white">
+              Recent Photos
+            </h2>
+            <p className="text-gray-400 mt-3 max-w-xl mx-auto">
+              Explore the latest uploaded moments from our football community.
+            </p>
+            <div className="w-20 h-1 bg-blue-600 mx-auto mt-4 rounded-full"></div>
+          </div>
+
+          {/* BEAUTIFUL LOADER */}
           {loading && (
-            <div className="flex justify-center items-center py-20">
-              <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="flex flex-col justify-center items-center py-24 space-y-6">
+              <div className="relative w-20 h-20">
+                <div className="absolute inset-0 rounded-full border-4 border-blue-600 animate-ping opacity-30"></div>
+                <div className="absolute inset-0 rounded-full border-4 border-blue-500"></div>
+                <div className="absolute inset-2 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl shadow-lg">
+                  ⚽
+                </div>
+              </div>
+
+              <p className="text-blue-400 text-sm tracking-widest animate-pulse uppercase">
+                Loading Recent Photos...
+              </p>
             </div>
           )}
 
-          {/* ===== SLIDER ===== */}
+          {/* SLIDER */}
           {!loading && images.length > 0 && (
             <>
               <Swiper
@@ -82,12 +150,8 @@ export default function Home() {
                 autoplay={{
                   delay: 3000,
                   disableOnInteraction: false,
-                  pauseOnMouseEnter: false,
                 }}
                 speed={800}
-                observer={true}
-                observeParents={true}
-                touchStartPreventDefault={false}
                 breakpoints={{
                   640: { slidesPerView: 1 },
                   768: { slidesPerView: 2 },
@@ -100,37 +164,24 @@ export default function Home() {
                       onClick={() => setSelectedImage(img)}
                       className="relative cursor-pointer rounded-xl overflow-hidden shadow-xl group bg-slate-800"
                     >
-                      {/* TITLE BAR */}
                       <div className="absolute top-0 left-0 right-0 bg-black/70 px-4 py-2 z-10">
                         <h3 className="text-white font-semibold text-sm md:text-base truncate">
                           {img.title || "Untitled"}
                         </h3>
                       </div>
 
-                      {/* IMAGE */}
                       <img
                         src={img.imageUrl}
                         alt={img.title}
                         className="w-full h-72 object-cover transition-transform duration-500 group-hover:scale-105"
                       />
 
-                      {/* OVERLAY */}
                       <div className="absolute inset-0 bg-black/30"></div>
-
-                      {/* DESCRIPTION */}
-                      {img.description && (
-                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black/80 to-transparent">
-                          <p className="text-sm text-gray-300 line-clamp-2">
-                            {img.description}
-                          </p>
-                        </div>
-                      )}
                     </div>
                   </SwiperSlide>
                 ))}
               </Swiper>
 
-              {/* GALLERY BUTTON */}
               <div className="text-center mt-12">
                 <Link
                   to="/gallery"
@@ -142,13 +193,11 @@ export default function Home() {
             </>
           )}
 
-          {/* ===== EMPTY STATE ===== */}
           {!loading && images.length === 0 && (
             <div className="text-center text-gray-400 py-20">
               No images available yet.
             </div>
           )}
-
         </div>
       </section>
 

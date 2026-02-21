@@ -4,7 +4,7 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
-// Attach token automatically
+// Attach token
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
 
@@ -14,5 +14,17 @@ api.interceptors.request.use((config) => {
 
   return config;
 });
+
+// Handle 401 globally
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/admin/login";
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default api;

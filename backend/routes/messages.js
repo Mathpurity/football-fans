@@ -4,34 +4,58 @@ import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-/**
- * PUBLIC — Send message
- */
+/* ========================================
+   PUBLIC — Send Message (Contact Form)
+======================================== */
 router.post("/", async (req, res) => {
-  const { name, email, message } = req.body;
+  try {
+    const { name, email, message } = req.body;
 
-  if (!name || !email || !message) {
-    return res.status(400).json({ message: "All fields are required" });
+    if (!name || !email || !message) {
+      return res.status(400).json({
+        message: "All fields are required",
+      });
+    }
+
+    const newMessage = await Message.create({
+      name,
+      email,
+      message,
+    });
+
+    res.status(201).json(newMessage);
+  } catch (error) {
+    console.error("Message create error:", error);
+    res.status(500).json({ message: "Failed to send message" });
   }
-
-  const saved = await Message.create({ name, email, message });
-  res.status(201).json(saved);
 });
 
-/**
- * ADMIN — Get all messages
- */
-router.get("/", authMiddleware, async (_req, res) => {
-  const messages = await Message.find().sort({ createdAt: -1 });
-  res.json(messages);
+/* ========================================
+   ADMIN — Get All Messages
+======================================== */
+router.get("/", authMiddleware, async (req, res) => {
+  try {
+    const messages = await Message.find()
+      .sort({ createdAt: -1 });
+
+    res.json(messages);
+  } catch (error) {
+    console.error("Fetch messages error:", error);
+    res.status(500).json({ message: "Failed to fetch messages" });
+  }
 });
 
-/**
- * ADMIN — Delete message
- */
+/* ========================================
+   ADMIN — Delete Message
+======================================== */
 router.delete("/:id", authMiddleware, async (req, res) => {
-  await Message.findByIdAndDelete(req.params.id);
-  res.status(204).end();
+  try {
+    await Message.findByIdAndDelete(req.params.id);
+    res.json({ message: "Message deleted" });
+  } catch (error) {
+    console.error("Delete message error:", error);
+    res.status(500).json({ message: "Failed to delete message" });
+  }
 });
 
 export default router;

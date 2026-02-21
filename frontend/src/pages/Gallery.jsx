@@ -51,17 +51,28 @@ export default function Gallery() {
     );
   };
 
+  // -------- BEAUTIFUL LOADER --------
   if (loading) {
     return (
-      <div className="py-20 flex justify-center">
-        <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      <div className="flex flex-col items-center justify-center py-32 space-y-6 bg-gray-50 min-h-screen">
+        <div className="relative w-24 h-24">
+          <div className="absolute inset-0 rounded-full border-4 border-blue-600 animate-ping opacity-30"></div>
+          <div className="absolute inset-0 rounded-full border-4 border-blue-500"></div>
+          <div className="absolute inset-3 bg-blue-600 rounded-full flex items-center justify-center text-white text-3xl shadow-xl">
+            ⚽
+          </div>
+        </div>
+
+        <p className="text-blue-600 text-sm tracking-widest uppercase animate-pulse">
+          Loading Gallery...
+        </p>
       </div>
     );
   }
 
   if (images.length === 0) {
     return (
-      <div className="py-20 text-center text-gray-500">
+      <div className="py-32 text-center text-gray-500">
         No images available.
       </div>
     );
@@ -74,7 +85,7 @@ export default function Gallery() {
 
           {Object.entries(groupedImages).map(([date, imgs]) => (
             <div key={date}>
-              
+
               {/* DATE HEADER */}
               <h2 className="text-2xl font-bold mb-6 text-gray-800 border-l-4 border-blue-600 pl-4">
                 {date}
@@ -109,7 +120,7 @@ export default function Gallery() {
 
                         {/* SCROLLABLE CAPTION */}
                         {img.description && (
-                          <div className="max-h-24 overflow-y-auto text-gray-600 text-sm pr-2 scrollbar-thin">
+                          <div className="max-h-24 overflow-y-auto text-gray-600 text-sm pr-2">
                             {img.description}
                           </div>
                         )}
