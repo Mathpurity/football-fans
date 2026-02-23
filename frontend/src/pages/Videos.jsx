@@ -7,14 +7,29 @@ export default function Videos() {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const videosPerPage = 6;
 
   useEffect(() => {
     fetchVideos()
-      .then(setVideos)
+      .then((data) => setVideos(data))
       .catch(() => setError("Failed to load videos"))
       .finally(() => setLoading(false));
   }, []);
 
+  /* ================= PAGINATION ================= */
+  const totalPages = Math.ceil(videos.length / videosPerPage);
+  const indexOfLast = currentPage * videosPerPage;
+  const indexOfFirst = indexOfLast - videosPerPage;
+  const currentVideos = videos.slice(indexOfFirst, indexOfLast);
+
+  const changePage = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  /* ================= LOADER ================= */
   if (loading) {
     return (
       <Container>
@@ -40,13 +55,38 @@ export default function Videos() {
 
   return (
     <Container>
-      <h1 className="text-3xl font-semibold mb-6">Latest Videos</h1>
+      <h1 className="text-3xl font-semibold mb-8">Latest Videos</h1>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {videos.map((video) => (
+        {currentVideos.map((video) => (
           <VideoCard key={video.id.videoId} video={video} />
         ))}
       </div>
+
+      {/* ================= PAGINATION ================= */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-6 mt-12">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => changePage(currentPage - 1)}
+            className="px-5 py-2 bg-gray-200 rounded-lg disabled:opacity-40 hover:bg-gray-300 transition"
+          >
+            Prev
+          </button>
+
+          <span className="font-semibold text-gray-700">
+            Page {currentPage} of {totalPages}
+          </span>
+
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => changePage(currentPage + 1)}
+            className="px-5 py-2 bg-gray-200 rounded-lg disabled:opacity-40 hover:bg-gray-300 transition"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </Container>
   );
 }

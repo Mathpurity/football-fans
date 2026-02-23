@@ -1,6 +1,6 @@
 export async function fetchVideos() {
   const res = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}/api/youtube/videos`
+    `${import.meta.env.VITE_API_URL}/youtube/videos`
   );
 
   if (!res.ok) {
