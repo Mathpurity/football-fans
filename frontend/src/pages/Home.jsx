@@ -39,7 +39,7 @@ export default function Home() {
       {/* ================= HERO SECTION ================= */}
       <section className="bg-gradient-to-r from-slate-900 to-black text-white py-24 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-6">
-          Welcome to Football Fans
+          Welcome to Football Fans Fellowship
         </h1>
         <p className="text-gray-300 max-w-2xl mx-auto mb-8">
           Explore exclusive fan moments, powerful highlights, and unforgettable
@@ -68,11 +68,11 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              About Football Fans
+              About Football Fans Fellowship
             </h2>
 
             <p className="text-gray-400 mb-4 leading-relaxed">
-              Football Fans is a growing digital platform dedicated to sharing
+              Football Fans Fellowship is a growing digital platform dedicated to sharing
               unforgettable moments, powerful match highlights, and passionate
               fan experiences from around the world.
             </p>

@@ -31,10 +31,29 @@ export default function AdminMessages() {
     load();
   }
 
+  /* ================= BEAUTIFUL LOADER ================= */
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+      <div className="flex flex-col items-center justify-center min-h-screen space-y-6">
+
+        <div className="relative w-24 h-24">
+
+          {/* Pulse Ring */}
+          <div className="absolute inset-0 rounded-full border-4 border-blue-600 animate-ping opacity-30"></div>
+
+          {/* Static Ring */}
+          <div className="absolute inset-0 rounded-full border-4 border-blue-500"></div>
+
+          {/* Center Icon */}
+          <div className="absolute inset-4 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl shadow-lg">
+            ✉
+          </div>
+        </div>
+
+        <p className="text-blue-600 uppercase tracking-widest text-sm animate-pulse">
+          Loading Messages...
+        </p>
+
       </div>
     );
   }

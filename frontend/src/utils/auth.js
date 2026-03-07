@@ -1,20 +1,24 @@
-import { jwtDecode } from "jwt-decode";
-
-export const saveToken = (token) => {
+// Save token
+export function saveToken(token) {
   localStorage.setItem("token", token);
-};
+}
 
-export const getToken = () => {
+// Get token
+export function getToken() {
   return localStorage.getItem("token");
-};
+}
 
-export const getUser = () => {
+// Remove token
+export function clearToken() {
+  localStorage.removeItem("token");
+}
+
+// Check if admin is logged in
+export function isAdmin() {
   const token = getToken();
-  if (!token) return null;
-  return jwtDecode(token);
-};
+  return !!token;
+}
 
-export const isAdmin = () => {
-  const user = getUser();
-  return user?.role === "admin";
-};
+export function isAuthenticated() {
+  return !!localStorage.getItem("token");
+}

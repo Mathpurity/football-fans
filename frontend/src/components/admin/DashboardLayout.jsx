@@ -1,14 +1,41 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { clearToken } from "../../utils/auth";
 
 export default function DashboardLayout({ children }) {
+
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/admin/login");
-  };
+  async function handleLogout() {
+
+    const result = await Swal.fire({
+      title: "Logout?",
+      text: "You will be logged out of the admin panel.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, logout",
+      cancelButtonText: "Cancel"
+    });
+
+    if (result.isConfirmed) {
+
+      clearToken();
+
+      Swal.fire({
+        icon: "success",
+        title: "Logged out successfully",
+        timer: 1200,
+        showConfirmButton: false
+      });
+
+      navigate("/admin/login");
+
+    }
+  }
 
   return (
     <div className="min-h-screen flex bg-gray-100 dark:bg-gray-900">
@@ -19,20 +46,31 @@ export default function DashboardLayout({ children }) {
           open ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 transition-transform duration-300`}
       >
+
         <div className="p-6 font-bold text-xl border-b border-gray-700">
           ⚽ Admin Panel
         </div>
 
         <nav className="p-4 space-y-2">
-          <NavLink to="/admin/dashboard" className="block p-3 rounded-lg hover:bg-gray-800">
+
+          <NavLink
+            to="/admin/dashboard"
+            className="block p-3 rounded-lg hover:bg-gray-800"
+          >
             Dashboard
           </NavLink>
 
-          <NavLink to="/admin/upload" className="block p-3 rounded-lg hover:bg-gray-800">
+          <NavLink
+            to="/admin/upload"
+            className="block p-3 rounded-lg hover:bg-gray-800"
+          >
             Images
           </NavLink>
 
-          <NavLink to="/admin/messages" className="block p-3 rounded-lg hover:bg-gray-800">
+          <NavLink
+            to="/admin/messages"
+            className="block p-3 rounded-lg hover:bg-gray-800"
+          >
             Messages
           </NavLink>
 
@@ -42,13 +80,16 @@ export default function DashboardLayout({ children }) {
           >
             Logout
           </button>
+
         </nav>
       </aside>
 
-      {/* Main */}
+      {/* Main Area */}
       <div className="flex-1 flex flex-col md:ml-64">
 
+        {/* Header */}
         <header className="bg-white dark:bg-gray-800 shadow-sm px-6 py-4 flex items-center justify-between">
+
           <button
             onClick={() => setOpen(!open)}
             className="md:hidden text-xl"
@@ -59,13 +100,16 @@ export default function DashboardLayout({ children }) {
           <h1 className="font-semibold text-gray-700 dark:text-white">
             Admin Dashboard
           </h1>
+
         </header>
 
+        {/* Page Content */}
         <main className="p-8 flex-1">
           {children}
         </main>
 
       </div>
+
     </div>
   );
 }

@@ -10,7 +10,7 @@ export default function Navbar() {
         
         {/* LOGO */}
         <Link to="/" className="font-bold text-xl">
-          FootballFans
+          FootballFansFellowship(FFF)
         </Link>
 
         {/* DESKTOP LINKS */}
