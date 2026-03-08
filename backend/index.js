@@ -19,7 +19,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://football-fans-frontend.onrender.com", // replace with your real frontend Render URL
+      "https://football-fans-kohl.vercel.app"
     ],
     credentials: true,
   })

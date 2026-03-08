@@ -24,9 +24,7 @@ export default function Contact() {
 
     try {
       setLoading(true);
-
       await sendMessage(form);
-
       success("Message sent successfully 🎉");
       setForm({ name: "", email: "", message: "" });
     } catch {
@@ -38,17 +36,14 @@ export default function Contact() {
 
   return (
     <Container>
-      <div className="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-lg">
-        <h1 className="text-3xl font-bold mb-6 text-center">
-          Contact Us
-        </h1>
+      <div className="max-w-xl mx-auto bg-white p-6 rounded shadow">
+        <h1 className="text-3xl font-bold mb-4 text-center">Contact Us</h1>
 
-        <form onSubmit={submit} className="space-y-5">
-
+        <form onSubmit={submit} className="space-y-4">
           <input
             name="name"
             placeholder="Your name"
-            className="border p-3 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
+            className="border p-3 w-full rounded"
             value={form.name}
             onChange={handleChange}
           />
@@ -57,7 +52,7 @@ export default function Contact() {
             name="email"
             type="email"
             placeholder="Your email"
-            className="border p-3 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
+            className="border p-3 w-full rounded"
             value={form.email}
             onChange={handleChange}
           />
@@ -65,7 +60,7 @@ export default function Contact() {
           <textarea
             name="message"
             placeholder="Your message"
-            className="border p-3 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
+            className="border p-3 w-full rounded"
             rows={5}
             value={form.message}
             onChange={handleChange}
@@ -73,18 +68,10 @@ export default function Contact() {
 
           <button
             disabled={loading}
-            className="w-full bg-black text-white py-3 rounded flex items-center justify-center gap-2 transition hover:bg-gray-800"
+            className="w-full bg-black text-white py-3 rounded hover:bg-gray-800 transition"
           >
-            {loading ? (
-              <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                Sending...
-              </>
-            ) : (
-              "Send Message"
-            )}
+            {loading ? "Sending..." : "Send Message"}
           </button>
-
         </form>
       </div>
     </Container>
