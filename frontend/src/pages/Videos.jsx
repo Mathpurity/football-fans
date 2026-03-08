@@ -12,13 +12,21 @@ export default function Videos() {
   const videosPerPage = 6;
 
   useEffect(() => {
-    fetchVideos()
-      .then((data) => setVideos(data))
-      .catch(() => setError("Failed to load videos"))
-      .finally(() => setLoading(false));
+    const loadVideos = async () => {
+      try {
+        const data = await fetchVideos();
+        setVideos(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Failed to load videos:", err);
+        setError("Failed to load videos");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadVideos();
   }, []);
 
-  /* ================= PAGINATION ================= */
   const totalPages = Math.ceil(videos.length / videosPerPage);
   const indexOfLast = currentPage * videosPerPage;
   const indexOfFirst = indexOfLast - videosPerPage;
@@ -29,7 +37,6 @@ export default function Videos() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  /* ================= LOADER ================= */
   if (loading) {
     return (
       <Container>
@@ -53,17 +60,23 @@ export default function Videos() {
     return <Container>{error}</Container>;
   }
 
+  if (videos.length === 0) {
+    return <Container>No videos available.</Container>;
+  }
+
   return (
     <Container>
       <h1 className="text-3xl font-semibold mb-8">Latest Videos</h1>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {currentVideos.map((video) => (
-          <VideoCard key={video.id.videoId} video={video} />
+          <VideoCard
+            key={video.id?.videoId || video.etag}
+            video={video}
+          />
         ))}
       </div>
 
-      {/* ================= PAGINATION ================= */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-6 mt-12">
           <button
