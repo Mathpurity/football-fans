@@ -16,12 +16,15 @@ export const getAdminImages = async () => {
   return res.data;
 };
 
-
 /**
  * ADMIN — Upload image
  */
 export const createImage = async (formData) => {
-  const res = await api.post("/images/upload", formData);
+  const res = await api.post("/images/upload", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return res.data;
 };
 
@@ -38,5 +41,5 @@ export const updateImage = async (id, data) => {
  */
 export const deleteImage = async (id) => {
   await api.delete(`/images/${id}`);
-  return true; // cleaner since backend returns 204
+  return true;
 };

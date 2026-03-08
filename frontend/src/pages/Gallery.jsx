@@ -25,7 +25,6 @@ export default function Gallery() {
     fetchImages();
   }, []);
 
-  /* ================= PAGINATION ================= */
   const totalPages = Math.ceil(images.length / imagesPerPage);
   const indexOfLast = currentPage * imagesPerPage;
   const indexOfFirst = indexOfLast - imagesPerPage;
@@ -36,9 +35,8 @@ export default function Gallery() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  /* ================= GROUP BY DATE ================= */
   const groupedImages = currentImages.reduce((groups, image) => {
-    const date = new Date(image.createdAt);
+    const date = image.createdAt ? new Date(image.createdAt) : new Date();
     const formattedDate = date.toLocaleDateString(undefined, {
       year: "numeric",
       month: "long",
@@ -65,7 +63,6 @@ export default function Gallery() {
     );
   };
 
-  /* ================= LOADER ================= */
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen space-y-6">
@@ -95,7 +92,6 @@ export default function Gallery() {
     <>
       <section className="py-20 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 space-y-16">
-
           {Object.entries(groupedImages).map(([date, imgs]) => (
             <div key={date}>
               <h2 className="text-2xl font-bold mb-6 text-gray-800 border-l-4 border-blue-600 pl-4">
@@ -116,7 +112,7 @@ export default function Gallery() {
                     >
                       <img
                         src={img.imageUrl}
-                        alt={img.title}
+                        alt={img.title || "Gallery image"}
                         className="w-full h-64 object-cover"
                       />
 
@@ -132,7 +128,9 @@ export default function Gallery() {
                         )}
 
                         <p className="text-xs text-gray-400">
-                          {new Date(img.createdAt).toLocaleTimeString()}
+                          {img.createdAt
+                            ? new Date(img.createdAt).toLocaleTimeString()
+                            : ""}
                         </p>
                       </div>
                     </div>
@@ -142,7 +140,6 @@ export default function Gallery() {
             </div>
           ))}
 
-          {/* ================= PAGINATION CONTROLS ================= */}
           <div className="flex justify-center items-center gap-6 mt-12">
             <button
               disabled={currentPage === 1}
@@ -164,12 +161,10 @@ export default function Gallery() {
               Next
             </button>
           </div>
-
         </div>
       </section>
 
-      {/* ================= MODAL ================= */}
-      {selectedIndex !== null && (
+      {selectedIndex !== null && images[selectedIndex] && (
         <div
           className="fixed inset-0 bg-black/90 flex items-center justify-center z-50"
           onClick={() => setSelectedIndex(null)}
@@ -180,13 +175,13 @@ export default function Gallery() {
           >
             <img
               src={images[selectedIndex].imageUrl}
-              alt={images[selectedIndex].title}
+              alt={images[selectedIndex].title || "Selected image"}
               className="w-full max-h-[75vh] object-contain rounded-lg shadow-2xl"
             />
 
             <div className="bg-slate-900 text-white p-6 rounded-b-lg">
               <h2 className="text-2xl font-bold">
-                {images[selectedIndex].title}
+                {images[selectedIndex].title || "Untitled"}
               </h2>
 
               {images[selectedIndex].description && (
@@ -196,7 +191,9 @@ export default function Gallery() {
               )}
 
               <p className="text-sm text-gray-400 mt-4">
-                {new Date(images[selectedIndex].createdAt).toLocaleString()}
+                {images[selectedIndex].createdAt
+                  ? new Date(images[selectedIndex].createdAt).toLocaleString()
+                  : ""}
               </p>
 
               <button
