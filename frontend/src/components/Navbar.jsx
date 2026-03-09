@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import logo from "../assets/favicon_512x512.png";
+
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -10,9 +12,9 @@ export default function Navbar() {
         
         {/* LOGO */}
         <Link to="/" className="font-bold text-xl">
-          FootballFansFellowship(FFF)
+          <img src={logo} alt="Football Fans Fellowship" className="h-10" />
         </Link>
-
+       
         {/* DESKTOP LINKS */}
         <nav className="hidden md:flex gap-6">
           <Link to="/gallery">Gallery</Link>
