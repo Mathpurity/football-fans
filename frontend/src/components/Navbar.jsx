@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import logo from "../assets/favicon_512x512.png";
+import logo from "../assets/logo_1024x1024.png";
 
 
 export default function Navbar() {
@@ -11,7 +11,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         
         {/* LOGO */}
-        <Link to="/" className="font-bold text-xl">
+        <Link to="/" className="font-bold text-xl flex item center">
           <img src={logo} 
           alt="Football Fans Fellowship" 
           className="h-10" />
