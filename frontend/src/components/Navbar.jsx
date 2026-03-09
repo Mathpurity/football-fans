@@ -12,7 +12,9 @@ export default function Navbar() {
         
         {/* LOGO */}
         <Link to="/" className="font-bold text-xl">
-          <img src={logo} alt="Football Fans Fellowship" className="h-10" />
+          <img src={logo} 
+          alt="Football Fans Fellowship" 
+          className="h-10" />
         </Link>
        
         {/* DESKTOP LINKS */}
