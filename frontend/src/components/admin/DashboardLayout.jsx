@@ -34,21 +34,39 @@ export default function DashboardLayout() {
     }
   }
 
+  const closeSidebar = () => setOpen(false);
+
   return (
-    <div className="min-h-screen flex bg-gray-100 dark:bg-gray-900">
+    <div className="min-h-screen flex bg-gray-100 dark:bg-gray-900 relative">
+      {/* Mobile Overlay */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={closeSidebar}
+        />
+      )}
+
       {/* Sidebar */}
       <aside
-        className={`fixed md:static z-40 w-64 bg-gradient-to-b from-gray-900 to-gray-800 text-white h-full transform ${
+        className={`fixed top-0 left-0 z-40 w-64 bg-gradient-to-b from-gray-900 to-gray-800 text-white h-screen transform transition-transform duration-300 ${
           open ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 transition-transform duration-300`}
+        } md:translate-x-0`}
       >
-        <div className="p-6 font-bold text-xl border-b border-gray-700">
-          ⚽ Admin Panel
+        <div className="p-6 font-bold text-xl border-b border-gray-700 flex items-center justify-between">
+          <span>⚽ Admin Panel</span>
+
+          <button
+            onClick={closeSidebar}
+            className="md:hidden text-2xl leading-none"
+          >
+            ×
+          </button>
         </div>
 
         <nav className="p-4 space-y-2">
           <NavLink
             to="/admin/dashboard"
+            onClick={closeSidebar}
             className={({ isActive }) =>
               `block p-3 rounded-lg transition ${
                 isActive ? "bg-gray-700" : "hover:bg-gray-800"
@@ -60,6 +78,7 @@ export default function DashboardLayout() {
 
           <NavLink
             to="/admin/upload"
+            onClick={closeSidebar}
             className={({ isActive }) =>
               `block p-3 rounded-lg transition ${
                 isActive ? "bg-gray-700" : "hover:bg-gray-800"
@@ -71,6 +90,7 @@ export default function DashboardLayout() {
 
           <NavLink
             to="/admin/messages"
+            onClick={closeSidebar}
             className={({ isActive }) =>
               `block p-3 rounded-lg transition ${
                 isActive ? "bg-gray-700" : "hover:bg-gray-800"
@@ -90,12 +110,13 @@ export default function DashboardLayout() {
       </aside>
 
       {/* Main Area */}
-      <div className="flex-1 flex flex-col md:ml-64">
+      <div className="flex-1 flex flex-col md:ml-64 min-h-screen">
         {/* Header */}
         <header className="bg-white dark:bg-gray-800 shadow-sm px-6 py-4 flex items-center justify-between">
           <button
-            onClick={() => setOpen(!open)}
-            className="md:hidden text-xl"
+            onClick={() => setOpen(true)}
+            className="md:hidden text-2xl text-gray-700 dark:text-white"
+            aria-label="Open sidebar"
           >
             ☰
           </button>
