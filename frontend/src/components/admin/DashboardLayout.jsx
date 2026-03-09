@@ -10,32 +10,33 @@ export default function DashboardLayout({ children }) {
 
   async function handleLogout() {
 
-    const result = await Swal.fire({
-      title: "Logout?",
-      text: "You will be logged out of the admin panel.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, logout",
-      cancelButtonText: "Cancel"
+  const result = await Swal.fire({
+    title: "Logout?",
+    text: "You will be logged out of the admin panel.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, logout",
+    cancelButtonText: "Cancel"
+  });
+
+  if (result.isConfirmed) {
+
+    clearToken();
+    localStorage.removeItem("user");
+
+    await Swal.fire({
+      icon: "success",
+      title: "Logged out successfully",
+      timer: 1200,
+      showConfirmButton: false
     });
 
-    if (result.isConfirmed) {
+    navigate("/admin/login", { replace: true });
 
-      clearToken();
-
-      Swal.fire({
-        icon: "success",
-        title: "Logged out successfully",
-        timer: 1200,
-        showConfirmButton: false
-      });
-
-      navigate("/admin/login");
-
-    }
   }
+}
 
   return (
     <div className="min-h-screen flex bg-gray-100 dark:bg-gray-900">
