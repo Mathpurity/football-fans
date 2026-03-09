@@ -14,7 +14,7 @@ export default function Navbar() {
         <Link to="/" className="font-bold text-xl flex item center">
           <img src={logo} 
           alt="Football Fans Fellowship" 
-          className="h-10" />
+          className="h-20" />
         </Link>
        
         {/* DESKTOP LINKS */}
