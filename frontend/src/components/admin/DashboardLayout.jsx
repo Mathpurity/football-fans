@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useNavigate, Outlet } from "react-router-dom";
 import Swal from "sweetalert2";
 import { clearToken } from "../../utils/auth";
+import { getUnreadMessageCount } from "../../services/messages";
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const navigate = useNavigate();
 
   async function handleLogout() {
@@ -36,9 +38,25 @@ export default function DashboardLayout() {
 
   const closeSidebar = () => setOpen(false);
 
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      try {
+        const data = await getUnreadMessageCount();
+        setUnreadCount(data?.count || 0);
+      } catch (error) {
+        console.error("Failed to fetch unread message count:", error);
+      }
+    };
+
+    fetchUnreadCount();
+
+    const interval = setInterval(fetchUnreadCount, 15000); // every 15 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="min-h-screen flex bg-gray-100 dark:bg-gray-900 relative">
-      {/* Mobile Overlay */}
       {open && (
         <div
           className="fixed inset-0 bg-black/50 z-30 md:hidden"
@@ -46,7 +64,6 @@ export default function DashboardLayout() {
         />
       )}
 
-      {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 z-40 w-64 bg-gradient-to-b from-gray-900 to-gray-800 text-white h-screen transform transition-transform duration-300 ${
           open ? "translate-x-0" : "-translate-x-full"
@@ -92,12 +109,18 @@ export default function DashboardLayout() {
             to="/admin/messages"
             onClick={closeSidebar}
             className={({ isActive }) =>
-              `block p-3 rounded-lg transition ${
+              `flex items-center justify-between p-3 rounded-lg transition ${
                 isActive ? "bg-gray-700" : "hover:bg-gray-800"
               }`
             }
           >
-            Messages
+            <span>Messages</span>
+
+            {unreadCount > 0 && (
+              <span className="min-w-[24px] h-6 px-2 flex items-center justify-center text-xs font-bold bg-red-500 text-white rounded-full">
+                {unreadCount > 99 ? "99+" : unreadCount}
+              </span>
+            )}
           </NavLink>
 
           <button
@@ -109,9 +132,7 @@ export default function DashboardLayout() {
         </nav>
       </aside>
 
-      {/* Main Area */}
       <div className="flex-1 flex flex-col md:ml-64 min-h-screen">
-        {/* Header */}
         <header className="bg-white dark:bg-gray-800 shadow-sm px-6 py-4 flex items-center justify-between">
           <button
             onClick={() => setOpen(true)}
@@ -126,7 +147,6 @@ export default function DashboardLayout() {
           </h1>
         </header>
 
-        {/* Page Content */}
         <main className="p-8 flex-1">
           <Outlet />
         </main>

@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { confirmDelete, success } from "../../utils/notify";
-import { getMessages, deleteMessage } from "../../services/messages";
+import {
+  getMessages,
+  deleteMessage,
+  markMessageAsRead,
+} from "../../services/messages";
 
 export default function AdminMessages() {
   const [messages, setMessages] = useState([]);
@@ -13,7 +17,25 @@ export default function AdminMessages() {
   async function load() {
     try {
       const data = await getMessages();
-      setMessages(Array.isArray(data) ? data : []);
+      const list = Array.isArray(data) ? data : [];
+
+      setMessages(list);
+
+      // Mark unread messages as read
+      const unreadMessages = list.filter((msg) => !msg.read);
+
+      if (unreadMessages.length > 0) {
+        await Promise.all(
+          unreadMessages.map((msg) => markMessageAsRead(msg._id))
+        );
+
+        setMessages((prev) =>
+          prev.map((msg) => ({
+            ...msg,
+            read: true,
+          }))
+        );
+      }
     } catch (error) {
       console.error("Failed to load messages:", error);
       setMessages([]);
@@ -24,27 +46,24 @@ export default function AdminMessages() {
 
   async function remove(id) {
     const result = await confirmDelete("Delete this message?");
+
     if (!result.isConfirmed) return;
 
-    await deleteMessage(id);
-    success("Message deleted");
-    load();
+    try {
+      await deleteMessage(id);
+      success("Message deleted");
+      load();
+    } catch (error) {
+      console.error("Failed to delete message:", error);
+    }
   }
 
-  /* ================= BEAUTIFUL LOADER ================= */
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen space-y-6">
-
         <div className="relative w-24 h-24">
-
-          {/* Pulse Ring */}
           <div className="absolute inset-0 rounded-full border-4 border-blue-600 animate-ping opacity-30"></div>
-
-          {/* Static Ring */}
           <div className="absolute inset-0 rounded-full border-4 border-blue-500"></div>
-
-          {/* Center Icon */}
           <div className="absolute inset-4 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl shadow-lg">
             ✉
           </div>
@@ -53,7 +72,6 @@ export default function AdminMessages() {
         <p className="text-blue-600 uppercase tracking-widest text-sm animate-pulse">
           Loading Messages...
         </p>
-
       </div>
     );
   }
@@ -70,15 +88,23 @@ export default function AdminMessages() {
         {messages.map((m) => (
           <div
             key={m._id}
-            className="border rounded-xl p-5 bg-white shadow hover:shadow-lg transition"
+            className={`border rounded-xl p-5 shadow hover:shadow-lg transition ${
+              !m.read ? "bg-blue-50 border-blue-400" : "bg-white"
+            }`}
           >
-            <div className="flex justify-between items-start">
+            <div className="flex justify-between items-start gap-4">
               <div>
                 <p className="font-semibold text-lg">{m.name}</p>
                 <p className="text-sm text-gray-600">{m.email}</p>
+
+                {!m.read && (
+                  <span className="inline-block mt-2 text-xs bg-blue-600 text-white px-2 py-1 rounded">
+                    NEW
+                  </span>
+                )}
               </div>
 
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-gray-400 whitespace-nowrap">
                 {new Date(m.createdAt).toLocaleString()}
               </p>
             </div>
