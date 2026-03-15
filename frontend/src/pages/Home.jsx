@@ -213,7 +213,7 @@ export default function Home() {
           </div>
 
           <div className="flex justify-center">
-            <div className="relative w-72 h-72 md:w-80 md:h-80 border-4 border-blue-600 rounded-2xl overflow-hidden shadow-2xl bg-slate-800 flex items-center justify-center">
+            <div className="relative w-56 h-56 md:w-64 md:h-64 border-4 border-blue-600 rounded-2xl overflow-hidden shadow-2xl bg-slate-800 flex items-center justify-center">
               <img
                 src={aboutOwner}
                 alt="Founder of Football Fans Fellowship"
