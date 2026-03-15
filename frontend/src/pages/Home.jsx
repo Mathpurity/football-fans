@@ -5,11 +5,13 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
 import { getImages } from "../services/images";
+import aboutOwner from "../assets/about-owner.png";
 
 export default function Home() {
   const [images, setImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -42,8 +44,8 @@ export default function Home() {
           Welcome to Football Fans Fellowship
         </h1>
         <p className="text-gray-300 max-w-2xl mx-auto mb-8">
-          Explore exclusive fan moments, powerful highlights, and unforgettable
-          football memories.
+          A global sports ministry dedicated to reaching football fans and
+          gamblers with the Gospel of Jesus Christ.
         </p>
 
         <div className="flex justify-center gap-6">
@@ -68,39 +70,158 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              About Football Fans Fellowship
+              About F³ (Football Fans Fellowship)
             </h2>
 
-            <p className="text-gray-400 mb-4 leading-relaxed">
-              Football Fans Fellowship is a growing digital platform dedicated to sharing
-              unforgettable moments, powerful match highlights, and passionate
-              fan experiences from around the world.
+            <p className="text-gray-300 mb-4 leading-relaxed">
+              <span className="font-semibold text-white">
+                F³ – Football Fans Fellowship
+              </span>{" "}
+              is a global sports ministry dedicated to reaching football fans
+              and gamblers with the Gospel of Jesus Christ, transforming them
+              from fans of football into followers of Christ.
             </p>
 
             <p className="text-gray-400 mb-4 leading-relaxed">
-              Our mission is to create a community where football lovers can
-              relive exciting memories, celebrate victories, and stay inspired
-              by the beautiful game.
+              F³ was birthed through a divine inspiration received by Paul Oko
+              on February 8, 2019, at about 5:45 AM at Umuode Community Football
+              Field, Aba, Abia State.
             </p>
 
-            <p className="text-gray-400 leading-relaxed">
-              This platform continues to grow with new content, exclusive
-              uploads, and exciting features built for fans by fans.
+            <p className="text-gray-400 mb-4 leading-relaxed">
+              During his early morning spiritual exercise, while praying and
+              juggling the ball on the football pitch, God opened his eyes to a
+              vision of football fans and gamblers filling football fields,
+              joyfully worshiping God and spreading the message of salvation.
             </p>
+
+            {showMore && (
+              <div className="space-y-4 text-gray-400 leading-relaxed">
+                <p>
+                  From that moment, the vision of Football Fans Fellowship (F³)
+                  was born — a movement committed to taking the Gospel to
+                  football environments and betting communities around the world.
+                </p>
+
+                <div>
+                  <h3 className="text-white font-semibold mb-1">Our Vision</h3>
+                  <p>To transform football fans into Jesus fans.</p>
+                </div>
+
+                <div>
+                  <h3 className="text-white font-semibold mb-1">Our Mission</h3>
+                  <p>
+                    To raise followers of Christ from the world of football.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="text-white font-semibold mb-1">Our Message</h3>
+                  <p>Personal transformation through Jesus Christ.</p>
+                </div>
+
+                <div>
+                  <h3 className="text-white font-semibold mb-1">
+                    Our Core Values – FOCUS
+                  </h3>
+                  <div className="space-y-1">
+                    <p>
+                      <span className="text-white font-medium">F</span> –
+                      Following Christ faithfully
+                    </p>
+                    <p>
+                      <span className="text-white font-medium">O</span> – One in
+                      unity and purpose
+                    </p>
+                    <p>
+                      <span className="text-white font-medium">C</span> – Course
+                      of righteousness
+                    </p>
+                    <p>
+                      <span className="text-white font-medium">U</span> – Until
+                      the end with perseverance
+                    </p>
+                    <p>
+                      <span className="text-white font-medium">S</span> – Success
+                      in Christ
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-white font-semibold mb-1">Our Mandate</h3>
+                  <p className="mb-2">
+                    F³ is not a social club or a church denomination. It is a
+                    sports ministry and a support arm of the Body of Christ.
+                  </p>
+                  <div className="space-y-1">
+                    <p>
+                      • Establish the Lordship of Jesus Christ in the hearts of
+                      football fans.
+                    </p>
+                    <p>
+                      • Create platforms where God’s Word is shared clearly and
+                      simply.
+                    </p>
+                    <p>
+                      • Equip football lovers to grow into the maturity and
+                      character of Christ.
+                    </p>
+                    <p>
+                      • Develop the spiritual lives of footballers and fans.
+                    </p>
+                    <p>
+                      • Participate in the global harvest of souls through the
+                      Great Commission.
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-white font-semibold mb-1">Our Slogan</h3>
+                  <p>“We Are Jesus Fans!”</p>
+                </div>
+
+                <div>
+                  <h3 className="text-white font-semibold mb-1">
+                    Our Commitment
+                  </h3>
+                  <div className="space-y-1">
+                    <p>• Preaching the Good News of Jesus Christ.</p>
+                    <p>
+                      • Living disciplined lives, like athletes striving for an
+                      eternal prize.
+                    </p>
+                    <p>
+                      • Reaching people everywhere with the message of
+                      salvation.
+                    </p>
+                  </div>
+                  <p className="mt-2 italic">
+                    (Inspired by 1 Corinthians 9:16–27)
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <button
+              onClick={() => setShowMore(!showMore)}
+              className="mt-4 text-blue-500 hover:text-blue-400 font-semibold transition"
+            >
+              {showMore ? "Read less" : "Read more"}
+            </button>
           </div>
 
           <div className="flex justify-center">
             <div className="relative w-72 h-72 md:w-80 md:h-80 border-4 border-blue-600 rounded-2xl overflow-hidden shadow-2xl bg-slate-800 flex items-center justify-center">
               <img
-                src="https://via.placeholder.com/400x400.png?text=Owner+Photo"
-                alt="Owner"
+                src={aboutOwner}
+                alt="Founder of Football Fans Fellowship"
                 className="w-full h-full object-cover"
               />
 
               <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-center py-2">
-                <p className="text-sm text-gray-300">
-                  Founder / Owner
-                </p>
+                <p className="text-sm text-gray-300">Founder / Owner</p>
               </div>
             </div>
           </div>
@@ -110,8 +231,6 @@ export default function Home() {
       {/* ================= RECENT PHOTOS SECTION ================= */}
       <section className="py-20 bg-slate-900">
         <div className="max-w-6xl mx-auto px-4">
-
-          {/* SECTION TITLE */}
           <div className="text-center mb-14">
             <h2 className="text-3xl md:text-4xl font-bold text-white">
               Recent Photos
@@ -122,7 +241,6 @@ export default function Home() {
             <div className="w-20 h-1 bg-blue-600 mx-auto mt-4 rounded-full"></div>
           </div>
 
-          {/* BEAUTIFUL LOADER */}
           {loading && (
             <div className="flex flex-col justify-center items-center py-24 space-y-6">
               <div className="relative w-20 h-20">
@@ -139,7 +257,6 @@ export default function Home() {
             </div>
           )}
 
-          {/* SLIDER */}
           {!loading && images.length > 0 && (
             <>
               <Swiper
@@ -172,7 +289,7 @@ export default function Home() {
 
                       <img
                         src={img.imageUrl}
-                        alt={img.title}
+                        alt={img.title || "Gallery image"}
                         className="w-full h-72 object-cover transition-transform duration-500 group-hover:scale-105"
                       />
 
@@ -213,13 +330,13 @@ export default function Home() {
           >
             <img
               src={selectedImage.imageUrl}
-              alt={selectedImage.title}
+              alt={selectedImage.title || "Selected image"}
               className="w-full rounded-lg shadow-2xl"
             />
 
             <div className="bg-slate-900 text-white p-6 rounded-b-lg">
               <h2 className="text-2xl font-bold">
-                {selectedImage.title}
+                {selectedImage.title || "Untitled"}
               </h2>
 
               {selectedImage.description && (
