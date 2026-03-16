@@ -5,7 +5,7 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
 import { getImages } from "../services/images";
-import aboutOwner from "../assets/about-owner.png";
+import aboutOwner from "../assets/about-owner-reduced.png";
 
 export default function Home() {
   const [images, setImages] = useState([]);
@@ -219,6 +219,12 @@ export default function Home() {
                 alt="Founder of Football Fans Fellowship"
                 className="w-full h-full object-cover"
               />
+
+               <div className="absolute bottom-0 w-full bg-black/70 text-center py-2">
+                <p className="text-sm text-gray-300">
+                  Founder / Pastor Paul Oko
+                </p>
+              </div>
 
               <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-center py-2">
                 <p className="text-sm text-gray-300">Founder / Owner</p>
