@@ -5,7 +5,7 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
 import { getImages } from "../services/images";
-import aboutOwner from "../assets/about-owner-reduced.png";
+import aboutOwner from "../assets/about-owner.png";
 
 export default function Home() {
   const [images, setImages] = useState([]);
