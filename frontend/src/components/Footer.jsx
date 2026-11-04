@@ -51,8 +51,8 @@ export default function Footer() {
             Contact
           </h3>
 
-          <p>Email: info@footballfans.com</p>
-          <p>Phone: +234 000 000 0000</p>
+          <p>Email: footballfansfellowship@gmail.com</p>
+          <p>Phone: +234 8067610375</p>
 
           <div className="flex gap-4 mt-3">
             <a href="#" className="hover:text-blue-600 transition">
