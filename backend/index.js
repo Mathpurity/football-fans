@@ -18,8 +18,8 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "https://footballfans.com.ng",
-      "https://www.footballfans.com.ng",
+      "footballfansfellowship.com",
+      "http://footballfansfellowship.com",
       "http://localhost:5173",
       "https://football-fans-kohl.vercel.app"
     ],
