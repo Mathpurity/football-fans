@@ -5,37 +5,106 @@ import User from "../models/user.js";
 
 const router = express.Router();
 
+/* ---------------- ADMIN LOGIN ---------------- */
+
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body || {};
 
-    const cleanEmail = email.trim().toLowerCase();
+    // Validate email
+    const cleanEmail =
+      typeof email === "string"
+        ? email.trim().toLowerCase()
+        : "";
 
-    console.log("LOGIN EMAIL RECEIVED:", cleanEmail);
-
-    const user = await User.findOne({ email: cleanEmail });
-
-    if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+    // Validate password
+    if (
+      !cleanEmail ||
+      typeof password !== "string" ||
+      !password
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required",
+      });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    // Check JWT configuration
+    if (!process.env.JWT_SECRET) {
+      console.error("JWT_SECRET is not configured");
 
-    if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(500).json({
+        success: false,
+        message: "Authentication service unavailable",
+      });
     }
 
-    const token = jwt.sign(
-      { id: user._id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
+    // Find user in MongoDB
+    const user = await User.findOne({
+      email: cleanEmail,
+    }).select("+password");
+
+    if (!user || !user.password) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    // Verify password
+    const isMatch = await bcrypt.compare(
+      password,
+      user.password
     );
 
-    res.json({ token });
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
 
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    // Allow administrators only
+    if (user.role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Administrator access required",
+      });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      {
+        id: user._id.toString(),
+        role: user.role,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
+
+    // Successful login
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+
+      token,
+
+      user: {
+        id: user._id,
+        email: user.email,
+        role: user.role,
+      },
+    });
+
+  } catch (error) {
+    console.error("Admin login error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "An unexpected server error occurred",
+    });
   }
 });
 
